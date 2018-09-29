@@ -5,13 +5,13 @@ import pandas as pd
 api = Namespace('network', description='Netzwerk abfragen')
 
 edge = api.model('Edge', {
-        "start": fields.Integer(),
-        "target": fields.Integer()
+        "from": fields.Integer(),
+        "to": fields.Integer()
 })
 
 node = api.model("Node", {
     "id": fields.Integer(),
-    "name": fields.String()
+    "label": fields.String()
 })
 
 nodes_and_edges = api.model("Nodes_And_Edges", {
@@ -30,15 +30,15 @@ class Network(Resource):
         df = pd.read_csv("data/network.csv")
         # Extract unique nodes
         nodes = pd.Series(
-            pd.unique(df[["start", "target"]].values.ravel())
-        ).reset_index(name="name").rename(columns={"index": "id"})
+            pd.unique(df[["from", "to"]].values.ravel())
+        ).reset_index(name="label").rename(columns={"index": "id"})
 
         # Create a map to map node names to ids
-        map_nodes = nodes.set_index("name").iloc[:, 0]
+        map_nodes = nodes.set_index("label").iloc[:, 0]
 
         # Map nodes to ids in list of edges
-        df.replace({"start": map_nodes}, inplace=True)
-        df.replace({"target": map_nodes}, inplace=True)
+        df.replace({"from": map_nodes}, inplace=True)
+        df.replace({"to": map_nodes}, inplace=True)
 
         return {"network": {
             "nodes": nodes.to_dict("records"),

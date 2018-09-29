@@ -1,8 +1,8 @@
-start,target
-op1, db1
-op1, db2
-op1, op3
-op2, db1
-op2, db3
-db1, op3
-db2, op3
+from,to
+op1,db1
+op1,db2
+op1,op3
+op2,db1
+op2,db3
+db1,op3
+db2,op3
