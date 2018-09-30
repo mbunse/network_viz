@@ -13,18 +13,24 @@ fetch(myRequest).then(response => response.json())
 
         var container = document.getElementById('chart-area');
 
-        var edges_raw = json["network"]["edges"]
-        for (edge of edges_raw) {
-            edge["arrows"]="to"
-        }
-        var edges = new vis.DataSet(edges_raw);
+        var edges = new vis.DataSet(json["network"]["edges"]);
         var nodes = new vis.DataSet(json["network"]["nodes"]);
 
         var data = {
             nodes: nodes,
             edges: edges
         };
-        var options = {};
+        var options = {
+            edges: {
+                arrows: "to"
+            },
+            layout: {
+                hierarchical: {
+                    direction: "UD",
+                    sortMethod: "directed"
+                }
+            }
+        };
         var network = new vis.Network(container, data, options);
         
     });
